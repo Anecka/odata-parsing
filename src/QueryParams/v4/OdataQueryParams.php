@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Bmatics\QueryParams\v4;
+namespace Bmatics\Odata\QueryParams\v4;
 
 
 use Bmatics\Odata\QueryParams\OdataQueryParamsInterface;
