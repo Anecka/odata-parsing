@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Bmatics\QueryParams;
+namespace Bmatics\QueryParams\v4;
 
 
 use Bmatics\Odata\QueryParams\OdataQueryParamsInterface;
 use Illuminate\Http\Request;
 
-class OdataQueryParamsV4 implements OdataQueryParamsInterface
+class OdataQueryParams implements OdataQueryParamsInterface
 {
 	private $request;
 	public function __construct(Request $request)
