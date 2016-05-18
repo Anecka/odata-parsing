@@ -1,7 +1,7 @@
 <?php
 namespace Bmatics\Odata\QueryParsing\v4;
 
-use Bmatics\Odata\QueryParams\v4\OdataQueryParams;
+use Bmatics\Odata\QueryParams\OdataQueryParamsInterface;
 use Bmatics\Odata\QueryParsing\OdataQueryParserInterface;
 use ODataProducer\UriProcessor\QueryProcessor\ExpressionParser\ExpressionParserSimple;
 use ODataProducer\UriProcessor\QueryProcessor\ExpressionParser\Expressions\ExpressionType;
@@ -20,10 +20,10 @@ class OdataProducerQueryParser implements OdataQueryParserInterface
 	/**
 	 * Parse the Odata query
 	 *
-	 * @param OdataQueryParams $queryParams
+	 * @param OdataQueryParamsInterface $queryParams
 	 * @return stdClass properties: filter,orderby,top,skip,select,expand
 	 */
-	public function parseQueryParams(OdataQueryParams $queryParams)
+	public function parseQueryParams(OdataQueryParamsInterface $queryParams)
 	{
 		foreach(['filter', 'orderby', 'top', 'skip', 'select', 'expand'] as $queryPart) {
 			$raw = $queryParams->{'get'.$queryPart}();
