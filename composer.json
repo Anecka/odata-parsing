@@ -10,7 +10,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "bmatics/odataphpprod": "dev-master"
+        "bmatics/odataphpprod": "dev-master",
+        "illuminate/http": "^5.2"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0",
