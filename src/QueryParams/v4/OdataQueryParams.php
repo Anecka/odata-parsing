@@ -37,7 +37,7 @@ class OdataQueryParams implements OdataQueryParamsInterface
 
 	public function getExpand()
 	{
-		// TODO: Implement getExpand() method.
+		return $this->request->input('$expand');
 	}
 
 	public function getFilter()
