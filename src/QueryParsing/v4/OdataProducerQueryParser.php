@@ -2,6 +2,7 @@
 namespace Bmatics\Odata\QueryParsing\v4;
 
 use Bmatics\Odata\QueryParams\v4\OdataQueryParams;
+use Bmatics\Odata\QueryParsing\OdataQueryParserInterface;
 use ODataProducer\UriProcessor\QueryProcessor\ExpressionParser\ExpressionParserSimple;
 use ODataProducer\UriProcessor\QueryProcessor\ExpressionParser\Expressions\ExpressionType;
 use ODataProducer\UriProcessor\QueryProcessor\ExpressionParser\Expressions\BinaryExpression;
