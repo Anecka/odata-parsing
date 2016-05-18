@@ -1,6 +1,7 @@
 <?php
 namespace Bmatics\Odata\QueryParsing;
 
+use Bmatics\QueryParams\OdataQueryParamsV4;
 use ODataProducer\UriProcessor\QueryProcessor\ExpressionParser\ExpressionParserSimple;
 use ODataProducer\UriProcessor\QueryProcessor\ExpressionParser\Expressions\ExpressionType;
 use ODataProducer\UriProcessor\QueryProcessor\ExpressionParser\Expressions\BinaryExpression;
@@ -10,7 +11,6 @@ use ODataProducer\UriProcessor\QueryProcessor\ExpressionParser\Expressions\Simpl
 use ODataProducer\UriProcessor\QueryProcessor\ExpressionParser\Expressions\ConstantExpression;
 use ODataProducer\UriProcessor\QueryProcessor\ExpressionParser\Expressions\AbstractExpression;
 use ODataProducer\Common\ODataException;
-use Bmatics\Odata\QueryParams\OdataQueryParamsInterface;
 use Bmatics\Odata\Exceptions\QueryParsingException;
 
 
@@ -19,9 +19,10 @@ class OdataProducerQueryParser implements OdataQueryParserInterface
 	/**
 	 * Parse the Odata query
 	 *
-	 * @return stdClass  properties: filter,orderby,top,skip,select,expand
+	 * @param OdataQueryParamsV4 $queryParams
+	 * @return stdClass properties: filter,orderby,top,skip,select,expand
 	 */
-	public function parseQueryParams(OdataQueryParamsInterface $queryParams)
+	public function parseQueryParams(OdataQueryParamsV4 $queryParams)
 	{
 		foreach(['filter', 'orderby', 'top', 'skip', 'select', 'expand'] as $queryPart) {
 			$raw = $queryParams->{'get'.$queryPart}();
@@ -30,16 +31,17 @@ class OdataProducerQueryParser implements OdataQueryParserInterface
 		return (object)$parsed;
 	}
 
-    /**
+	/**
 	 * Parse on Odata $orderby string into an array
 	 *
 	 * Example:
 	 * input: "user/fname asc, user/lname desc"
 	 * output: [["property"=>"user.fname", "direction"=>"asc"], ["property"=>"user.lname", "direction"=>"desc"]]
-	 * 
+	 *
 	 * @param string $rawOrderBy
 	 * @return array
-   	 */
+	 * @throws QueryParsingException
+	 */
     protected function parseOrderBy($rawOrderBy)
     {
 		$orderings = explode(',', $rawOrderBy);
@@ -69,6 +71,7 @@ class OdataProducerQueryParser implements OdataQueryParserInterface
 	 *
 	 * @param string $rawSkip
 	 * @return int|null
+	 * @throws QueryParsingException
 	 */
 	protected function parseSkip($rawSkip)
 	{
@@ -91,6 +94,7 @@ class OdataProducerQueryParser implements OdataQueryParserInterface
 	 *
 	 * @param string $rawTop
 	 * @return int|null
+	 * @throws QueryParsingException
 	 */
 	protected function parseTop($rawTop)
 	{
@@ -108,16 +112,17 @@ class OdataProducerQueryParser implements OdataQueryParserInterface
 		return $top;
 	}
 
-    /**
+	/**
 	 * Parse on Odata $expand string into an array
 	 *
 	 * Example:
 	 * input: "foo/bar, foo/bar2"
 	 * output: ["foo.bar", "foo.bar2"]
-	 * 
+	 *
 	 * @param string $rawExpand
 	 * @return array
-   	 */
+	 * @throws QueryParsingException
+	 */
 	protected function parseExpand($rawExpand)
 	{
 		$expands = explode(',', $rawExpand);
@@ -140,16 +145,17 @@ class OdataProducerQueryParser implements OdataQueryParserInterface
 		return $parsedExpands;
 	}
 
-    /**
+	/**
 	 * Parse on Odata $select string into an array
 	 *
 	 * Example:
 	 * input: "*, foo/bar2"
 	 * output: ["*", "foo.bar2"]
-	 * 
+	 *
 	 * @param string $rawSelect
 	 * @return array
-   	 */
+	 * @throws QueryParsingException
+	 */
 	protected function parseSelect($rawSelect)
 	{
 		$selects = explode(',', $rawSelect);
@@ -174,15 +180,16 @@ class OdataProducerQueryParser implements OdataQueryParserInterface
 
 
 	/**
-     * Parse an Odata $filter string into an array
-     * 
+	 * Parse an Odata $filter string into an array
+	 *
 	 * Example:
 	 * input: "user/fname eq \"Bob\""
 	 * output: ["type"=>"eq","left"=>["type"=>"property","value"=>"user.fname"],"right"=>["type"=>"literal", "value"=>"Bob"]]
 	 *
-     * @param string $rawFilter
-     * @return array
-     */
+	 * @param string $rawFilter
+	 * @return array
+	 * @throws QueryParsingException
+	 */
     protected function parseFilter($rawFilter)
     {
     	$rawFilter = trim($rawFilter);
